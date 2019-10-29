@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.taobao.arthas</groupId>
         <artifactId>arthas-all</artifactId>
-        <version>3.1.2-SNAPSHOT</version>
+        <version>3.1.5-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>arthas-packaging</artifactId>
@@ -46,7 +46,7 @@
                     <plugin>
                         <artifactId>jdeb</artifactId>
                         <groupId>org.vafer</groupId>
-                        <version>1.7</version>
+                        <version>1.8</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>

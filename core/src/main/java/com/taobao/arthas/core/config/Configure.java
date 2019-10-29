@@ -24,6 +24,14 @@ public class Configure {
     private String arthasCore;
     private String arthasAgent;
 
+    private String tunnelServer;
+    private String agentId;
+
+    /**
+     * report executed command
+     */
+    private String statUrl;
+
     /**
      * session timeout seconds
      */
@@ -85,6 +93,30 @@ public class Configure {
         this.sessionTimeout = sessionTimeout;
     }
 
+    public String getTunnelServer() {
+        return tunnelServer;
+    }
+
+    public void setTunnelServer(String tunnelServer) {
+        this.tunnelServer = tunnelServer;
+    }
+
+    public String getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(String agentId) {
+        this.agentId = agentId;
+    }
+
+    public String getStatUrl() {
+        return statUrl;
+    }
+
+    public void setStatUrl(String statUrl) {
+        this.statUrl = statUrl;
+    }
+
     // 对象的编码解码器
     private final static FeatureCodec codec = new FeatureCodec(';', '=');
 
@@ -106,7 +138,10 @@ public class Configure {
 
             // 非静态的才需要纳入非序列化过程
             try {
-                map.put(field.getName(), String.valueOf(ArthasReflectUtils.getFieldValueByField(this, field)));
+                Object fieldValue = ArthasReflectUtils.getFieldValueByField(this, field);
+                if (fieldValue != null) {
+                    map.put(field.getName(), String.valueOf(fieldValue));
+                }
             } catch (Throwable t) {
                 //
             }
