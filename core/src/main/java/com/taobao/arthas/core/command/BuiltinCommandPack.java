@@ -2,6 +2,7 @@ package com.taobao.arthas.core.command;
 
 import com.taobao.arthas.core.command.basic1000.CatCommand;
 import com.taobao.arthas.core.command.basic1000.ClsCommand;
+import com.taobao.arthas.core.command.basic1000.GrepCommand;
 import com.taobao.arthas.core.command.basic1000.HelpCommand;
 import com.taobao.arthas.core.command.basic1000.HistoryCommand;
 import com.taobao.arthas.core.command.basic1000.KeymapCommand;
@@ -12,6 +13,7 @@ import com.taobao.arthas.core.command.basic1000.ShutdownCommand;
 import com.taobao.arthas.core.command.basic1000.StopCommand;
 import com.taobao.arthas.core.command.basic1000.SystemEnvCommand;
 import com.taobao.arthas.core.command.basic1000.SystemPropertyCommand;
+import com.taobao.arthas.core.command.basic1000.TeeCommand;
 import com.taobao.arthas.core.command.basic1000.VMOptionCommand;
 import com.taobao.arthas.core.command.basic1000.VersionCommand;
 import com.taobao.arthas.core.command.hidden.JulyCommand;
@@ -32,6 +34,7 @@ import com.taobao.arthas.core.command.monitor200.HeapDumpCommand;
 import com.taobao.arthas.core.command.monitor200.JvmCommand;
 import com.taobao.arthas.core.command.monitor200.MBeanCommand;
 import com.taobao.arthas.core.command.monitor200.MonitorCommand;
+import com.taobao.arthas.core.command.monitor200.ProfilerCommand;
 import com.taobao.arthas.core.command.monitor200.StackCommand;
 import com.taobao.arthas.core.command.monitor200.ThreadCommand;
 import com.taobao.arthas.core.command.monitor200.TimeTunnelCommand;
@@ -88,8 +91,6 @@ public class BuiltinCommandPack implements CommandResolver {
         commands.add(Command.create(ClsCommand.class));
         commands.add(Command.create(ResetCommand.class));
         commands.add(Command.create(VersionCommand.class));
-        commands.add(Command.create(ShutdownCommand.class));
-        commands.add(Command.create(StopCommand.class));
         commands.add(Command.create(SessionCommand.class));
         commands.add(Command.create(SystemPropertyCommand.class));
         commands.add(Command.create(SystemEnvCommand.class));
@@ -99,5 +100,10 @@ public class BuiltinCommandPack implements CommandResolver {
         commands.add(Command.create(CatCommand.class));
         commands.add(Command.create(PwdCommand.class));
         commands.add(Command.create(MBeanCommand.class));
+        commands.add(Command.create(GrepCommand.class));
+        commands.add(Command.create(TeeCommand.class));
+        commands.add(Command.create(ProfilerCommand.class));
+        commands.add(Command.create(ShutdownCommand.class));
+        commands.add(Command.create(StopCommand.class));
     }
 }

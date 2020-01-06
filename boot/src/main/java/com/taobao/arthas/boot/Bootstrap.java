@@ -47,7 +47,7 @@ import com.taobao.middleware.cli.annotations.Summary;
                 + "  java -jar arthas-boot.jar --stat-url 'http://192.168.10.11:8080/api/stat'\n"
                 + "  java -jar arthas-boot.jar -c 'sysprop; thread' <pid>\n"
                 + "  java -jar arthas-boot.jar -f batch.as <pid>\n"
-                + "  java -jar arthas-boot.jar --use-version 3.1.4\n"
+                + "  java -jar arthas-boot.jar --use-version 3.1.7\n"
                 + "  java -jar arthas-boot.jar --versions\n"
                 + "  java -jar arthas-boot.jar --session-timeout 3600\n" + "  java -jar arthas-boot.jar --attach-only\n"
                 + "  java -jar arthas-boot.jar --repo-mirror aliyun --use-http\n" + "WIKI:\n"
@@ -60,7 +60,7 @@ public class Bootstrap {
 
     private boolean help = false;
 
-    private int pid = -1;
+    private long pid = -1;
     private String targetIp = DEFAULT_TARGET_IP;
     private int telnetPort = DEFAULT_TELNET_PORT;
     private int httpPort = DEFAULT_HTTP_PORT;
@@ -138,7 +138,7 @@ public class Bootstrap {
 
     @Argument(argName = "pid", index = 0, required = false)
     @Description("Target pid")
-    public void setPid(int pid) {
+    public void setPid(long pid) {
         this.pid = pid;
     }
 
@@ -314,8 +314,8 @@ public class Bootstrap {
         }
 
         // check telnet/http port
-        int telnetPortPid = -1;
-        int httpPortPid = -1;
+        long telnetPortPid = -1;
+        long httpPortPid = -1;
         if (bootstrap.getTelnetPort() > 0) {
             telnetPortPid = SocketUtils.findTcpListenProcess(bootstrap.getTelnetPort());
             if (telnetPortPid > 0) {
@@ -329,7 +329,7 @@ public class Bootstrap {
             }
         }
 
-        int pid = bootstrap.getPid();
+        long pid = bootstrap.getPid();
         // select pid
         if (pid < 0) {
             try {
@@ -347,7 +347,7 @@ public class Bootstrap {
         if (telnetPortPid > 0 && pid != telnetPortPid) {
             AnsiLog.error("Target process {} is not the process using port {}, you will connect to an unexpected process.",
                             pid, bootstrap.getTelnetPort());
-            AnsiLog.error("1. Try to restart arthas-boot, select process {}, shutdown it first with running the 'shutdown' command.",
+            AnsiLog.error("1. Try to restart arthas-boot, select process {}, shutdown it first with running the 'stop' command.",
                             telnetPortPid);
             AnsiLog.error("2. Or try to use different telnet port, for example: java -jar arthas-boot.jar --telnet-port 9998 --http-port -1");
             System.exit(1);
@@ -356,7 +356,7 @@ public class Bootstrap {
         if (httpPortPid > 0 && pid != httpPortPid) {
             AnsiLog.error("Target process {} is not the process using port {}, you will connect to an unexpected process.",
                             pid, bootstrap.getHttpPort());
-            AnsiLog.error("1. Try to restart arthas-boot, select process {}, shutdown it first with running the 'shutdown' command.",
+            AnsiLog.error("1. Try to restart arthas-boot, select process {}, shutdown it first with running the 'stop' command.",
                             httpPortPid);
             AnsiLog.error("2. Or try to use different http port, for example: java -jar arthas-boot.jar --telnet-port 9998 --http-port 9999", httpPortPid);
             System.exit(1);
@@ -430,8 +430,10 @@ public class Bootstrap {
             if (localLastestVersion == null) {
                 if (remoteLastestVersion == null) {
                     // exit
-                    AnsiLog.error("Can not find Arthas under local: {} and remote: {}", ARTHAS_LIB_DIR,
-                                    bootstrap.getRepoMirror());
+                    AnsiLog.error("Can not find Arthas under local: {} and remote maven repo mirror: {}", ARTHAS_LIB_DIR,
+                            bootstrap.getRepoMirror());
+                    AnsiLog.error(
+                            "Unable to download arthas from remote server, please download the full package according to wiki: https://github.com/alibaba/arthas");
                     System.exit(1);
                 } else {
                     needDownload = true;
@@ -649,7 +651,7 @@ public class Bootstrap {
         return attachOnly;
     }
 
-    public int getPid() {
+    public long getPid() {
         return pid;
     }
 
